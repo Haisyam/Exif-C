@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../src/style/custom.css" />
+    <link rel="stylesheet" href="../src/style/output.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="shortcut icon" href="img/fav.svg" type="image/x-icon" />
+    <title>Upload Tugas B. Inggris</title>
+
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </head>
+  <body class="bg-black font-mulish">
+    <section
+      class="text-white bg-cover bg-no-repeat"
+      style="background-image: url('../src/assets/images/anu.svg')"
+    >
+      <div class="flex items-center justify-center min-h-screen">
+        <div class="digambar rounded-lg p-6 max-w-lg w-full">
+          <form id="form" class="space-y-4">
+            <h3
+              class="text-center bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-md lg:text-2xl font-extrabold text-transparent mb-4"
+            >
+              Tugas
+              <span class="text-white text-4xl text-end">Conversation</span>
+            </h3>
+            <hr class="mb-4" />
+
+            <div>
+              <label class="block text-sm font-medium mb-1"
+                >Pilih File
+                <span class="text-red-500 text-xs">*harus file PDF</span></label
+              >
+              <div class="relative">
+                <input
+                  name="file"
+                  class="hidden"
+                  id="uploadfile"
+                  type="file"
+                  accept=".pdf"
+                  required
+                />
+                <label
+                  for="uploadfile"
+                  class="cursor-pointer block w-full text-sm p-3 text-center inputan"
+                >
+                  Pilih File PDF
+                </label>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1"
+                >Masukkan Nama File</label
+              >
+              <input
+                name="filename"
+                class="block w-full text-sm inputan p-2"
+                id="filename"
+                type="text"
+                required
+              />
+              <!-- <label class="block text-sm font-medium mb-1"
+                >Masukkan Nama File</label
+              >
+              <input
+                name="filename"
+                class="block w-full text-sm text-gray-700 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                id="filename"
+                type="text"
+                required
+              /> -->
+            </div>
+            <div class="flex items-center justify-between">
+              <input
+                id="submit"
+                class="inputan hover:border hover:border-gray-500 text-white font-semibold py-2 px-4 cursor-pointer"
+                type="submit"
+                value="Upload"
+              />
+              <a
+                class="inputan hover:border hover:border-gray-500 text-white font-semibold py-2 px-4"
+                href="https://drive.google.com/drive/folders/1p1lSyLrFKdpE3h3iMBP6rp5pyLAvt46D"
+                target="_blank"
+                >Lihat Tugas</a
+              >
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      const form = document.getElementById("form");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const file = form.file.files[0];
+        const fr = new FileReader();
+        fr.readAsArrayBuffer(file);
+        fr.onload = (f) => {
+          const url =
+            "https://script.google.com/macros/s/AKfycbzUE1poIniKstE2s78SCaxlOwsSF0QUxqVdtyaXG-EIOgCT2lmDaYvn6qixLzFR46Ke/exec"; // <--- Please set the URL of Web Apps.
+
+          const qs = new URLSearchParams({
+            filename: form.filename.value || file.name,
+            mimeType: file.type,
+          });
+          fetch(`${url}?${qs}`, {
+            method: "POST",
+            body: JSON.stringify([...new Int8Array(f.target.result)]),
+          })
+            .then((res) => res.json())
+            .then((e) => {
+              console.log(e); // response appscript
+              Swal.fire({
+                icon: "success",
+                title: "Berhasil!",
+                text: "File berhasil diupload!",
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+              Swal.fire({
+                icon: "error",
+                title: "Gagal",
+                text: "Gagal mengupload file, silakan coba lagi.",
+              });
+            });
+        };
+      });
+    </script>
+  </body>
+</html>
