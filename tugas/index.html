@@ -64,10 +64,10 @@
             <hr class="mb-4" />
 
             <div>
-              <label class="block text-sm font-medium mb-1"
-                >Pilih File
-                <span class="text-red-500 text-xs">*harus file PDF</span></label
-              >
+              <label class="block text-sm font-medium mb-1">
+                Pilih File
+                <span class="text-red-500 text-xs">*harus file PDF</span>
+              </label>
               <div class="relative">
                 <input
                   name="file"
@@ -79,7 +79,8 @@
                 />
                 <label
                   for="uploadfile"
-                  class="cursor-pointer block w-full text-sm p-3 text-center inputan"
+                  id="fileLabel"
+                  class="cursor-pointer block w-full text-sm p-3 text-center inputan focus:outline-none"
                 >
                   Pilih File PDF
                 </label>
@@ -129,6 +130,14 @@
     <script src="./src/js/index.js"></script>
 
     <script>
+      const uploadfile = document.getElementById("uploadfile");
+      const fileLabel = document.getElementById("fileLabel");
+
+      uploadfile.addEventListener("change", function () {
+        const fileName = uploadfile.files[0]?.name || "Pilih File PDF";
+        fileLabel.textContent = fileName;
+      });
+
       const form = document.getElementById("form");
       form.addEventListener("submit", (e) => {
         e.preventDefault();
