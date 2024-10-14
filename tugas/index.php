@@ -18,6 +18,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body class="bg-black font-mulish">
+    <?php
+     include '../inc/nav.html'
+    ?>
     <section
       class="text-white bg-cover bg-no-repeat"
       style="background-image: url('../src/assets/images/anu.svg')"
@@ -95,6 +98,8 @@
         </div>
       </div>
     </section>
+
+    <script src="./src/js/index.js"></script>
 
     <script>
       const form = document.getElementById("form");
